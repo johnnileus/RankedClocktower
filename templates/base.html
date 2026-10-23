@@ -1,0 +1,23 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>{% block title %}Clocktower{% endblock %}</title>
+</head>
+
+<body>
+  <nav>
+    <a href="{{ url_for('list_games') }}">Games</a> |
+    <a href="{{ url_for('stat_page') }}">Stats</a>
+  </nav>
+  <hr>
+
+  {% for m in get_flashed_messages() %}
+    <p><b>{{ m }}</b></p>
+  {% endfor %}
+
+  {% block content %}{% endblock %}
+</body>
+
+</html>

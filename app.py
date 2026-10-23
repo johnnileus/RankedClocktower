@@ -45,6 +45,11 @@ def insert_players(conn, game_id, players):
              end_id, end_a or start_a, death or None),
         )
 
+
+@app.route("/", methods=["GET", "POST"])
+def stat_page():
+    return render_template("stats.html")
+
 @app.route("/add", methods=["GET", "POST"])
 def add_game():
     conn = get_db()
@@ -210,5 +215,23 @@ def edit_game(game_id):
             characters=characters,
             death_causes=DEATH_CAUSES,
         )
+    finally:
+        conn.close()
+
+
+@app.route("/games/<int:game_id>/delete", methods=["POST"])
+def delete_game(game_id):
+    conn = get_db()
+    try:
+        with conn:
+            # Delete the child rows first, otherwise the foreign key blocks it
+            conn.execute("DELETE FROM game_players WHERE game_id = ?", (game_id,))
+            cur = conn.execute("DELETE FROM games WHERE id = ?", (game_id,))
+
+        if cur.rowcount == 0:
+            abort(404)   # no such game
+
+        flash(f"Deleted game #{game_id}.")
+        return redirect(url_for("list_games"))
     finally:
         conn.close()

@@ -15,7 +15,11 @@ CREATE TABLE IF NOT EXISTS games (
     date         TEXT NOT NULL,          -- store as 'YYYY-MM-DD'
     script       TEXT,
     storyteller  TEXT,
-    winning_team TEXT NOT NULL CHECK (winning_team IN ('Good', 'Evil'))
+    winning_team TEXT NOT NULL CHECK (winning_team IN ('Good', 'Evil')),
+    length       INTEGER,
+    online       BOOLEAN,
+    result       TEXT,
+    notes        TEXT
 );
 
 CREATE TABLE IF NOT EXISTS game_players (
@@ -30,14 +34,3 @@ CREATE TABLE IF NOT EXISTS game_players (
         ('Executed', 'Demon kill', 'Slayer', 'Other ability')),
     UNIQUE (game_id, player_id)          -- one row per person per game
 );
-
--- A few characters to get started (INSERT OR IGNORE makes re-running safe)
-INSERT OR IGNORE INTO characters (name, type) VALUES
-    ('Washerwoman', 'Townsfolk'),
-    ('Empath',      'Townsfolk'),
-    ('Slayer',      'Townsfolk'),
-    ('Saint',       'Outsider'),
-    ('Goon',        'Outsider'),
-    ('Poisoner',    'Minion'),
-    ('Spy',         'Minion'),
-    ('Imp',         'Demon');

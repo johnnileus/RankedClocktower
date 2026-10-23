@@ -1,4 +1,5 @@
 ﻿import sqlite3
+import csv
 
 conn = sqlite3.connect("clocktower.db")
 with open("schema.sql") as f:
@@ -7,8 +8,29 @@ conn.close()
 print("Database created.")
 
 
+
+
 conn = sqlite3.connect("clocktower.db")
 conn.execute("PRAGMA foreign_keys = ON")
+
+
+TYPE_ORDER = ["Townsfolk", "Outsider", "Minion", "Demon", "Traveller"]
+rows = []
+with open("characters.csv", newline="", encoding="utf-8-sig") as f:
+    for record in csv.DictReader(f):
+        for char_type, name in record.items():
+            name = (name or "").strip()
+            if name:
+                rows.append((name, char_type.strip()))
+
+rows.sort(key=lambda r: TYPE_ORDER.index(r[1]))
+
+with conn:
+    conn.executemany(
+        "INSERT INTO characters (name, type) VALUES (?, ?) "
+        "ON CONFLICT(name) DO UPDATE SET type = excluded.type",
+        rows,
+    )
 
 # Add a player
 conn.execute("INSERT OR IGNORE INTO players (name) VALUES (?)", ("Alice",))
@@ -40,6 +62,10 @@ conn.execute(
     """,
     (game_id, "Alice", "Empath", "Good", "Empath", "Good", None),
 )
+
+
+
+print(f"Imported {len(rows)} characters.")
 
 conn.commit()   # nothing is saved until you do this
 conn.close()
