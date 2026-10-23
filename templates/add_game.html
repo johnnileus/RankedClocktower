@@ -1,0 +1,93 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Add game</title>
+</head>
+
+<body>
+  <h1>Add a game</h1>
+
+    <p><a href="{{ url_for('list_games') }}">Game List</a></p>
+
+  {% for m in get_flashed_messages() %}
+    <p><b>{{ m }}</b></p>
+  {% endfor %}
+
+  <form method="post">
+    <p>Date: <input type="date" name="date" value="{{ today }}" required></p>
+    <p>Script: <input name="script"></p>
+    <p>Storyteller: <input name="storyteller"></p>
+    <p>Winning team:
+      <select name="winning_team" required>
+        <option>Good</option>
+        <option>Evil</option>
+      </select>
+    </p>
+
+    <h2>Players</h2>
+
+    <datalist id="char-list">
+      {% for c in characters %}<option value="{{ c['name'] }}">{% endfor %}
+    </datalist>
+
+    <datalist id="death-list">
+      {% for d in death_causes %}<option value="{{ d }}">{% endfor %}
+    </datalist>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Start character</th>
+          <th>End character</th>
+          <th>Start alignment</th>
+          <th>End alignment</th>
+          <th>Death Cause</th>
+        </tr>
+      </thead>
+      <tbody id="rows">
+        {% for i in range(5) %}
+        <tr>
+          <td><input name="name"></td>
+
+          <td>
+            <input name="start_char" list="char-list">
+          </td> <td>
+              <input name="end_char" list="char-list" placeholder="Same as start">
+          </td>
+
+          <td>
+            <select name="start_align"><option>Good</option><option>Evil</option></select>
+          </td> <td>
+            <select name="end_align">
+              <option value="">Same as start</option><option>Good</option><option>Evil</option>
+            </select>
+          </td>
+
+          <td>
+            <input name="death_cause" list="death-list" placeholder="Survived">
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p>
+      <button type="button" id="add-row">+ Add player row</button>
+      <button type="submit">Save game</button>
+    </p>
+  </form>
+
+  <script>
+    document.getElementById("add-row").addEventListener("click", function () {
+      var body = document.getElementById("rows");
+      var clone = body.rows[0].cloneNode(true);
+      clone.querySelectorAll("input").forEach(function (i) { i.value = ""; });
+      clone.querySelectorAll("select").forEach(function (s) { s.selectedIndex = 0; });
+      body.appendChild(clone);
+    });
+  </script>
+</body>
+</html>

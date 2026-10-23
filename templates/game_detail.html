@@ -1,0 +1,54 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Game #{{ game['id'] }}</title>
+</head>
+
+<body>
+  <p><a href="{{ url_for('list_games') }}">&larr; Back to all games</a></p>
+  <p><a href="{{ url_for('edit_game', game_id=game['id']) }}">Edit this game</a></p>
+
+  <h1>Game #{{ game['id'] }} &ndash; {{ game['date'] }}</h1>
+  {% for m in get_flashed_messages() %}
+    <p><b>{{ m }}</b></p>
+  {% endfor %}
+  <p>
+    Script: {{ game['script'] or '—' }}<br>
+    Storyteller: {{ game['storyteller'] or '—' }}<br>
+    Winner: <b>{{ game['winning_team'] }}</b>
+  </p>
+
+  <h2>Players</h2>
+  {% if not players %}
+    <p>No players recorded for this game.</p>
+  {% else %}
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Player</th>
+        <th>Started as</th>
+        <th></th>
+        <th>Ended as</th>
+        <th></th>
+        <th>Outcome</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in players %}
+      <tr>
+        <td>{{ p['name'] }}</td>
+        <td>{{ p['start_char'] }}</td>
+        <td>{{ p['start_alignment'] }}</td>
+        <td>{{ p['end_char'] }}</td>
+        <td>{{ p['end_alignment'] }}</td>
+        <td>{{ p['death_cause'] or 'Survived' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</body>
+
+</html>

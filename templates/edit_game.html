@@ -1,0 +1,92 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Edit game #{{ game['id'] }}</title>
+</head>
+
+<body>
+  <p><a href="{{ url_for('game_detail', game_id=game['id']) }}">&larr; Cancel</a></p>
+  <h1>Edit game #{{ game['id'] }}</h1>
+
+  {% for m in get_flashed_messages() %}
+    <p><b>{{ m }}</b></p>
+  {% endfor %}
+
+  <form method="post">
+    <p>Date: <input type="date" name="date" value="{{ game['date'] }}" required></p>
+    <p>Script: <input name="script" value="{{ game['script'] or '' }}"></p>
+    <p>Storyteller: <input name="storyteller" value="{{ game['storyteller'] or '' }}"></p>
+    <p>Winning team:
+      <select name="winning_team" required>
+        <option {% if game['winning_team'] == 'Good' %}selected{% endif %}>Good</option>
+        <option {% if game['winning_team'] == 'Evil' %}selected{% endif %}>Evil</option>
+      </select>
+    </p>
+
+    <h2>Players</h2>
+
+    <datalist id="char-list">
+      {% for c in characters %}<option value="{{ c['name'] }}">{% endfor %}
+    </datalist>
+
+    <datalist id="death-list">
+      {% for d in death_causes %}<option value="{{ d }}">{% endfor %}
+    </datalist>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Start character</th>
+          <th>Start alignment</th>
+          <th>End character</th>
+          <th>End alignment</th>
+          <th>Death Cause</th>
+        </tr>
+      </thead>
+      <tbody id="rows">
+        {% for p in players %}
+        <tr>
+          <td><input name="name" value="{{ p['name'] }}"></td>
+          <td><input name="start_char" list="char-list" value="{{ p['start_char'] }}"></td>
+          <td>
+            <select name="start_align">
+              <option {% if p['start_alignment'] == 'Good' %}selected{% endif %}>Good</option>
+              <option {% if p['start_alignment'] == 'Evil' %}selected{% endif %}>Evil</option>
+            </select>
+          </td>
+          <td><input name="end_char" list="char-list" value="{{ p['end_char'] }}"></td>
+          <td>
+            <select name="end_align">
+              <option value="">Same as start</option>
+              <option {% if p['end_alignment'] == 'Good' %}selected{% endif %}>Good</option>
+              <option {% if p['end_alignment'] == 'Evil' %}selected{% endif %}>Evil</option>
+            </select>
+          </td>
+          <td><input name="death_cause" list="death-list" placeholder="Survived"
+                     value="{{ p['death_cause'] or '' }}"></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <p>
+      <button type="button" id="add-row">+ Add player row</button>
+      <button type="submit">Save changes</button>
+    </p>
+  </form>
+
+  <script>
+    document.getElementById("add-row").addEventListener("click", function () {
+      var body = document.getElementById("rows");
+      var clone = body.rows[0].cloneNode(true);
+      clone.querySelectorAll("input").forEach(function (i) { i.value = ""; });
+      clone.querySelectorAll("select").forEach(function (s) { s.selectedIndex = 0; });
+      body.appendChild(clone);
+    });
+  </script>
+</body>
+
+</html>

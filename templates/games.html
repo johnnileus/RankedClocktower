@@ -1,0 +1,49 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>All games</title>
+</head>
+
+<body>
+  <h1>All games</h1>
+  <p><a href="{{ url_for('add_game') }}">Add a game</a></p>
+
+  {% if not games %}
+    <p>No games saved yet.</p>
+  {% else %}
+  <table border="1">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Script</th>
+        <th>Storyteller</th>
+        <th>Winner</th>
+        <th>Players</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for g in games %}
+      <tr>
+        <td>{{ g['id'] }}</td>
+        <td>{{ g['date'] }}</td>
+        <td>{{ g['script'] or '—' }}</td>
+        <td>{{ g['storyteller'] or '—' }}</td>
+        <td>{{ g['winning_team'] }}</td>
+        <td>{{ g['player_count'] }}</td>
+        <td>
+          <form action="{{ url_for('game_detail', game_id=g['id']) }}">
+            <button type="submit">View details</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</body>
+
+</html>
