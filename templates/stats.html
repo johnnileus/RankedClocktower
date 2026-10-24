@@ -1,10 +1,68 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+﻿{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Clocktower Ranked{% endblock %}
+
+{% block content %}
+  <h1>Game Stats</h1>
+
+  {% if headline['games'] == 0 %}
+    <p>No games yet. Add some and the stats will appear here.</p>
+  {% else %}
+
+  <p>
+    <b>{{ headline['games'] }}</b> games |
+    <b>{{ headline['players'] }}</b> players |
+    <b>{{ headline['storytellers'] }}</b> storytellers |
+    Evil winrate: <b>{{ headline['evil_winrate'] }}%</b>
+  </p>
+
+  <h2>Player win stats</h2>
+
+  <table border="1" id="player-table">
+    <thead>
+      <tr>
+        <th><button type="button" class="sort-btn" data-col="0" data-type="text">Name</button></th>
+        <th><button type="button" class="sort-btn" data-col="1" data-type="num">Games</button></th>
+        <th><button type="button" class="sort-btn" data-col="2" data-type="num">Wins</button></th>
+        <th><button type="button" class="sort-btn" data-col="3" data-type="num">Winrate</button></th>
+        <th>Win streak (best)</th>
+        <th>Lose streak (best)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for p in player_stats %}
+      <tr>
+        <td>{{ p['name'] }}</td>
+        <td>{{ p['games'] }}</td>
+        <td>{{ p['wins'] }}</td>
+        <td>{{ p['winrate'] }}%</td>
+        <td>{{ streaks[p['name']]['cur_win'] }} ({{ streaks[p['name']]['best_win'] }})</td>
+        <td>{{ streaks[p['name']]['cur_loss'] }} ({{ streaks[p['name']]['best_loss'] }})</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% for t in ['Townsfolk', 'Outsider', 'Minion', 'Demon', 'Traveller'] %}
+    {% if t in characters_by_type %}
+    <h2>{{ t }}</h2>
+    <table border="1">
+      <thead>
+        <tr><th>#</th><th>Character</th><th>Played</th><th>Winrate</th></tr>
+      </thead>
+      <tbody>
+        {% for c in characters_by_type[t] %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ c['name'] }}</td>
+          <td>{{ c['plays'] }}</td>
+          <td>{{ c['winrate'] }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  {% endfor %}
+
+  {% endif %}
+{% endblock %}

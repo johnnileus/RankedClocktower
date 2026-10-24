@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = "dev-only-change-later"   # needed for flash messages
 
 # Keep this in sync with the CHECK list in schema.sql
-DEATH_CAUSES = ["Executed", "Demon kill", "Slayer", "Other ability"]
+DEATH_CAUSES = ["Executed", "By demon", "Own ability", "Other ability", "Survived", "Exiled"]
 
 
 def get_db():
@@ -46,9 +46,82 @@ def insert_players(conn, game_id, players):
         )
 
 
+def win_streaks(conn):
+    rows = conn.execute(
+        "SELECT p.name, (gp.end_alignment = g.winning_team) AS won "
+        "FROM game_players gp "
+        "JOIN players p ON p.id = gp.player_id "
+        "JOIN games g   ON g.id = gp.game_id "
+        "ORDER BY g.date, g.id"
+    ).fetchall()
+
+    results_by_player = {}
+    for r in rows:
+        results_by_player.setdefault(r["name"], []).append(r["won"])
+
+    streaks = {}
+    for name, results in results_by_player.items():
+        best_win = best_loss = cur_win = cur_loss = 0
+        for won in results:
+            if won:
+                cur_win += 1
+                cur_loss = 0
+            else:
+                cur_loss += 1
+                cur_win = 0
+            best_win = max(best_win, cur_win)
+            best_loss = max(best_loss, cur_loss)
+        streaks[name] = {"best_win": best_win, "best_loss": best_loss,
+                         "cur_win": cur_win, "cur_loss": cur_loss}
+    return streaks
+
+
 @app.route("/", methods=["GET", "POST"])
 def stat_page():
-    return render_template("stats.html")
+    conn = get_db()
+    try:
+        headline = conn.execute(
+            "SELECT (SELECT COUNT(*) FROM games) AS games, "
+            "       (SELECT COUNT(*) FROM players) AS players, "
+            "       (SELECT COUNT(DISTINCT storyteller) FROM games) AS storytellers, "
+            "       (SELECT ROUND(100.0 * SUM(winning_team = 'Evil') / COUNT(*), 1) "
+            "        FROM games) AS evil_winrate"
+        ).fetchone()
+
+        player_stats = conn.execute(
+            "SELECT p.name, COUNT(*) AS games, "
+            "  SUM(gp.end_alignment = g.winning_team) AS wins, "
+            "  ROUND(100.0 * SUM(gp.end_alignment = g.winning_team) / COUNT(*), 1) AS winrate "
+            "FROM game_players gp "
+            "JOIN players p ON p.id = gp.player_id "
+            "JOIN games g   ON g.id = gp.game_id "
+            "GROUP BY p.id HAVING games >= 1 "
+            "ORDER BY games DESC, winrate DESC"
+        ).fetchall()
+
+        character_rows = conn.execute(
+            "SELECT c.type, c.name, COUNT(*) AS plays, "
+            "  ROUND(100.0 * SUM(gp.end_alignment = g.winning_team) / COUNT(*), 1) AS winrate "
+            "FROM game_players gp "
+            "JOIN characters c ON c.id = gp.start_character_id "
+            "JOIN games g      ON g.id = gp.game_id "
+            "GROUP BY c.id ORDER BY plays DESC, c.name"
+        ).fetchall()
+
+        # Group into {"Townsfolk": [rows], "Demon": [rows], ...}
+        characters_by_type = {}
+        for c in character_rows:
+            characters_by_type.setdefault(c["type"], []).append(c)
+
+        return render_template(
+            "stats.html",
+            headline=headline,
+            player_stats=player_stats,
+            characters_by_type=characters_by_type,
+            streaks=win_streaks(conn),
+        )
+    finally:
+        conn.close()
 
 @app.route("/add", methods=["GET", "POST"])
 def add_game():

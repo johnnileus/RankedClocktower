@@ -16,10 +16,11 @@ CREATE TABLE IF NOT EXISTS games (
     script       TEXT,
     storyteller  TEXT,
     winning_team TEXT NOT NULL CHECK (winning_team IN ('Good', 'Evil')),
-    length       INTEGER,
-    online       BOOLEAN,
+
     result       TEXT,
-    notes        TEXT
+    game_length  INTEGER,
+    game_type    TEXT CHECK (game_type IN ('Discord', 'In-person'))
+
 );
 
 CREATE TABLE IF NOT EXISTS game_players (
@@ -31,6 +32,6 @@ CREATE TABLE IF NOT EXISTS game_players (
     end_character_id   INTEGER NOT NULL REFERENCES characters(id),
     end_alignment      TEXT NOT NULL CHECK (end_alignment IN ('Good', 'Evil')),
     death_cause        TEXT CHECK (death_cause IS NULL OR death_cause IN
-        ('Executed', 'Demon kill', 'Slayer', 'Other ability')),
+        ('Executed', 'By demon', 'Own ability', 'Other ability', 'Survived', 'Exiled')),
     UNIQUE (game_id, player_id)          -- one row per person per game
 );

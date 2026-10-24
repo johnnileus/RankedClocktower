@@ -1,0 +1,207 @@
+1	Tom W	Evil	Evil	Spy	Spy	Lose	Survived
+1	Boyana	Good	Good	Mayor	Mayor	Win	Survived
+1	George	Good	Good	Slayer	Slayer	Win	Survived
+1	Tom K	Good	Good	Librarian	Librarian	Win	Survived
+1	Edel	Good	Good	Monk	Monk	Win	Survived
+1	Matt H	Good	Good	Empath	Empath	Win	Survived
+1	Morgan	Evil	Evil	Imp	Imp	Lose	Other ability
+1	Ryan	Good	Good	Thief	Thief	Win	Survived
+2	Tom W	Good	Good	Undertaker	Undertaker	Win	Survived
+2	Morgan	Good	Good	Recluse	Recluse	Win	Executed
+2	Boyana	Good	Good	Librarian	Librarian	Win	By demon
+2	George	Evil	Evil	Poisoner	Poisoner	Lose	Executed
+2	Tom K	Good	Good	Drunk	Drunk	Win	By demon
+2	Edel	Good	Good	Mayor	Mayor	Win	Survived
+2	Matt H	Evil	Evil	Imp	Imp	Lose	Survived
+2	Ryan	Good	Good	Fortune Teller	Fortune Teller	Win	By demon
+2	Émilie	Good	Good	Empath	Empath	Win	Executed
+3	Gvidas	Evil	Evil	Imp	Imp	Lose	Executed
+3	Alfie	Good	Good	Undertaker	Undertaker	Win	Survived
+3	Joe	Good	Good	Gunslinger	Gunslinger	Win	Survived
+3	Kai	Good	Good	Soldier	Soldier	Win	Executed
+3	Millie	Evil	Evil	Spy	Spy	Lose	Other ability
+3	Jamie	Good	Good	Ravenkeeper	Ravenkeeper	Win	By demon
+3	Émilie	Good	Good	Washerwoman	Washerwoman	Win	Survived
+3	Matt G	Good	Good	Saint	Saint	Win	Survived
+3	Alasdair	Good	Good	Fortune Teller	Fortune Teller	Win	Survived
+4	Alasdair	Good	Good	Saint	Saint	Win	Survived
+4	Émilie	Good	Good	Monk	Monk	Win	By demon
+4	Gvidas	Evil	Evil	Poisoner	Poisoner	Lose	Executed
+4	Alfie	Good	Good	Slayer	Slayer	Win	By demon
+4	Joe	Good	Good	Librarian	Librarian	Win	Executed
+4	Kai	Good	Good	Empath	Empath	Win	Survived
+4	Millie	Good	Good	Ravenkeeper	Ravenkeeper	Win	Executed
+4	Tom J	Good	Good	Butler	Butler	Win	By demon
+4	Tom K	Evil	Evil	Imp	Imp	Lose	Other ability
+4	Max	Evil	Evil	Gunslinger	Gunslinger	Lose	Survived
+5	Kai	Good	Good	Chef	Chef	Lose	By demon
+5	Tom K	Good	Good	Virgin	Virgin	Lose	By demon
+5	Tom J	Evil	Evil	Poisoner	Poisoner	Win	Executed
+5	Max	Good	Good	Mayor	Mayor	Lose	Executed
+5	Alasdair	Evil	Evil	Imp	Imp	Win	Survived
+5	Joe	Good	Good	Saint	Saint	Lose	By demon
+5	Émilie	Good	Good	Ravenkeeper	Ravenkeeper	Lose	Executed
+5	Matt G	Good	Good	Amnesiac	Amnesiac	Lose	Survived
+6	Tom K	Good	Good	Washerwoman	Washerwoman	Win	Other ability
+6	Alasdair	Good	Good	Virgin	Virgin	Win	Survived
+6	Boyana	Good	Good	Drunk	Drunk	Win	By demon
+6	Gvidas	Good	Good	Monk	Monk	Win	Executed
+6	John	Good	Good	Mayor	Mayor	Win	Survived
+6	Tayyab	Good	Good	Empath	Empath	Win	By demon
+6	Tobi	Evil	Evil	Spy	Spy	Lose	Survived
+6	Viktorija	Evil	Evil	Imp	Imp	Lose	Executed
+7	Tobi	Good	Good	Fortune Teller	Fortune Teller	Win	Survived
+7	Boyana	Evil	Evil	Imp	Imp	Lose	Executed
+7	Alfie	Good	Good	Town Crier	Town Crier	Win	By demon
+7	Viktorija	Good	Good	Fortune Teller	Fortune Teller	Win	Survived
+7	Gvidas	Good	Good	Pixie	Pixie	Win	Survived
+7	Alasdair	Evil	Evil	Poisoner	Poisoner	Lose	Survived
+7	Tom K	Good	Good	Oracle	Oracle	Win	Survived
+8	Gvidas	Good	Good	Shugenja	Shugenja	Lose	By demon
+8	Alasdair	Evil	Evil	Devil's Advocate	Devil's Advocate	Win	Survived
+8	John	Good	Good	Drunk	Drunk	Lose	Executed
+8	Tobi	Good	Good	Acrobat	Acrobat	Lose	By demon
+8	Alfie	Good	Good	Farmer	Farmer	Lose	By demon
+8	Viktorija	Evil	Evil	Pukka	Pukka	Win	Survived
+8	Boyana	Good	Good	Town Crier	Town Crier	Lose	By demon
+8	Tayyab	Good	Good	Cannibal	Cannibal	Lose	Survived
+9	Boyana	Good	Good	Steward	Steward	Win	By demon
+9	Gvidas	Evil	Evil	Poisoner	Poisoner	Lose	By demon
+9	John	Good	Good	Saint	Saint	Win	By demon
+9	Morgan	Good	Good	Fortune Teller	Fortune Teller	Win	Survived
+9	Ned	Good	Good	Undertaker	Undertaker	Win	Survived
+9	Tobi	Evil	Evil	Spy	Spy	Lose	Executed
+9	Tom K	Good	Good	Empath	Empath	Win	Executed
+9	Alasdair	Good	Good	Chef	Chef	Win	Executed
+10	Morgan	Good	Good	Drunk	Drunk	Win	By demon
+10	Alfie	Good	Good	Village Idiot	Village Idiot	Win	Survived
+10	Alasdair	Evil	Evil	Yaggababble	Yaggababble	Lose	Executed
+10	Tobi	Good	Good	Saint	Saint	Win	Survived
+10	Tom K	Good	Good	Butler	Butler	Win	Executed
+10	Edel	Evil	Evil	Baron	Baron	Lose	Executed
+10	Ned	Good	Good	Fortune Teller	Fortune Teller	Win	By demon
+10	Boyana	Good	Good	Undertaker	Undertaker	Win	By demon
+11	Tom K	Good	Good	Klutz	Klutz	Win	Executed
+11	Ryan	Good	Good	Steward	Steward	Win	Survived
+11	Tayyab	Good	Good	Virgin	Virgin	Win	By demon
+11	George	Good	Good	Fortune Teller	Fortune Teller	Win	Survived
+11	Gvidas	Evil	Evil	Widow	Widow	Lose	By demon
+11	Edel	Good	Good	Saint	Saint	Win	By demon
+11	Alfie	Good	Good	Soldier	Soldier	Win	Survived
+11	Anna	Evil	Evil	Al-Hadikhia	Al-Hadikhia	Lose	By demon
+11	Matt	Good	Good	Undertaker	Undertaker	Win	By demon
+12	Matt	Good	Good	Recluse	Recluse	Win	Executed
+12	Tayyab	Good	Good	Clockmaker	Clockmaker	Win	By demon
+12	Alfie	Good	Good	Ravenkeeper	Ravenkeeper	Win	By demon
+12	Anna	Good	Good	Mayor	Mayor	Win	By demon
+12	Edel	Evil	Evil	Poisoner	Poisoner	Lose	Survived
+12	Boyana	Evil	Evil	Lord of Typhon	Lord of Typhon	Lose	Executed
+12	Tom K	Evil	Evil	Scarlet Woman	Scarlet Woman	Lose	Executed
+12	Gvidas	Good	Good	Exorcist	Exorcist	Win	Survived
+13	Anna	Evil	Evil	Pit-Hag	Pit-Hag	Lose	By demon
+13	Boyana	Evil	Evil	Al-Hadikhia	Al-Hadikhia	Lose	By demon
+13	Ned	Good	Good	Undertaker	Undertaker	Win	Survived
+13	Tom K	Good	Good	Slayer	Drunk	Win	Survived
+13	Tobi	Good	Good	Fortune Teller	Fortune Teller	Win	Survived
+13	Gvidas	Good	Good	Soldier	Soldier	Win	Survived
+13	Isaac	Good	Good	Virgin	Virgin	Win	By demon
+13	Alfie	Good	Good	Ogre	Ogre	Win	Executed
+14	Anna	Good	Good	Dreamer	Dreamer	Lose	By demon
+14	Boyana	Good	Good	Gossip	Gossip	Lose	By demon
+14	Gvidas	Good	Good	Savant	Savant	Lose	By demon
+14	Ryan	Evil	Evil	Mezepheles	Mezepheles	Win	Survived
+14	Tobi	Good	Evil	Magician	Magician	Win	Survived
+14	Ned	Good	Good	Knight	Knight	Lose	Executed
+14	Alfie	Evil	Evil	Ojo	Ojo	Win	Survived
+15	Ryan	Evil	Evil	Imp	Imp	Win	Survived
+15	Morgan	Good	Good	Chef	Chef	Lose	Executed
+15	Alasdair	Good	Good	Dreamer	Dreamer	Lose	By demon
+15	Tobi 	Good	Good	Gunslinger	Gunslinger	Lose	Survived
+15	Kai	Good	Good	Fortune Teller	Fortune Teller	Lose	Executed
+15	Émilie	Good	Good	Amnesiac	Amnesiac	Lose	Executed
+15	Gvidas	Evil	Evil	Widow	Widow	Win	Other ability
+15	Matt G	Good	Good	Cannibal	Cannibal	Lose	By demon
+16	Matt G	Good	Good	Mutant	Mutant	Lose	By demon
+16	Morgan	Good	Evil	Drunk	Fang Gu	Win	Survived
+16	Alasdair	Evil	Evil	Godfather	Godfather	Win	Survived
+16	Tom K	Good	Good	Ravenkeeper	Ravenkeeper	Lose	Executed
+16	Kai	Good	Good	Dreamer	Dreamer	Lose	By demon
+16	Émilie	Evil	Evil	Fang Gu	Fang Gu	Win	Own ability
+16	Tobi	Good	Good	Sweetheart	Sweetheart	Lose	Survived
+16	Gvidas	Good	Good	Philosopher	Philosopher	Lose	By demon
+17	Morgan	Good	Good	Balloonist	Lunatic	Win	By demon
+17	Alasdair	Good	Good	Ravenkeeper	Ravenkeeper	Win	By demon
+17	Kai	Good	Evil	Snake Charmer	Vigormortis	Lose	Executed
+17	Matt G	Good	Good	Chef	Mutant	Win	Survived
+17	Martha	Evil	Good	Vigormortis	Snake Charmer	Win	Survived
+17	Anna	Evil	Evil	Pit-Hag	Pit-Hag	Lose	By demon
+17	Émilie	Good	Good	Recluse	Recluse	Win	Executed
+17	Tayyab	Good	Good	Investigator	Investigator	Win	Executed
+17	Tom	Good	Good	Cannibal	Cannibal	Win	Executed
+18	Ryan	Evil	Evil	Cerenovus	Cerenovus	Win	Executed
+18	Alasdair	Evil	Evil	Pit-Hag	Imp	Win	Survived
+18	Matt G	Good	Good	Grandmother	Grandmother	Lose	Executed
+18	Kai	Good	Good	Amnesiac	Amnesiac	Lose	Executed
+18	Matt	Good	Good	Dreamer	Dreamer	Lose	By demon
+18	Anna	Good	Good	Snake Charmer	Snake Charmer	Lose	By demon
+18	Tayyab	Good	Good	Cannibal	Cannibal	Lose	Survived
+18	Martha	Evil	Evil	Imp	Imp	Win	Own ability
+18	Tom K	Good	Good	Balloonist	Balloonist	Lose	Survived
+18	Morgan	Good	Good	Fortune Teller	Fortune Teller	Lose	Executed
+19	Émilie	Evil	Evil	Godfather	Godfather	Lose	Executed
+19	Boyana	Good	Good	Goon	Goon	Win	Survived
+19	Tom W	Good	Good	Professor	Professor	Win	Survived
+19	Tom K	Good	Good	Innkeeper	Innkeeper	Win	Survived
+19	Jake	Good	Good	Exorcist	Exorcist	Win	Survived
+19	Isaac	Evil	Evil	Devil's Advocate	Devil's Advocate	Lose	Executed
+19	Viktorija	Good	Good	Lunatic	Lunatic	Win	Executed
+19	Anna	Evil	Evil	Godfather	Godfather	Lose	Survived
+19	Martha	Good	Good	Grandmother	Grandmother	Win	Executed
+19	Ryan	Good	Good	Chambermaid	Chambermaid	Win	Survived
+19	Kai	Good	Good	Fool	Fool	Win	Survived
+19	Alasdair	Evil	Evil	Zombuul	Zombuul	Lose	Executed
+19	Poppy	Good	Good	Tea Lady	Tea Lady	Win	Other ability
+19	Harry	Good	Good	Gossip	Gossip	Win	By demon
+20	Boyana	Good	Good	Undertaker	Undertaker	Lose	Executed
+20	Tom K	Evil	Evil	Imp	Imp	Win	By demon
+20	Isaac	Evil	Evil	Scarlet Woman	Imp	Win	By demon
+20	Jake	Good	Good	Washerwoman	Washerwoman	Lose	Executed
+20	Anna	Evil	Evil	Poisoner	Poisoner	Win	By demon
+20	Martha	Good	Good	Monk	Monk	Lose	By demon
+20	Gvidas	Good	Good	Ravenkeeper	Ravenkeeper	Lose	Executed
+20	Kai	Good	Good	Slayer	Slayer	Lose	Executed
+20	Alasdair	Good	Good	Fortune Teller	Fortune Teller	Lose	By demon
+20	Poppy	Good	Good	Soldier	Soldier	Lose	Executed
+20	Harry	Good	Good	Saint	Saint	Lose	Survived
+20	Émilie	Good	Good	Chef	Chef	Lose	By demon
+20	Tom W	Evil	Evil	Baron	Imp	Win	Survived
+21	Alfie	Good	Good	Washerwoman	Washerwoman	Win	Other ability
+21	Matt G	Good	Good	Fortune Teller	Fortune Teller	Win	By demon
+21	Finn	Good	Good	Slayer	Slayer	Win	Survived
+21	Kai	Good	Good	Virgin	Virgin	Win	By demon
+21	Tom K	Good	Good	Soldier	Soldier	Win	Survived
+21	Martha	Evil	Evil	Imp	Imp	Lose	Own ability
+21	Anna	Good	Good	Monk	Monk	Win	By demon
+21	Ryan	Good	Good	Librarian	Librarian	Win	Executed
+21	Gvidas	Good	Good	Ravenkeeper	Ravenkeeper	Win	Executed
+21	Isaac	Evil	Evil	Poisoner	Imp	Lose	Executed
+21	Jake	Evil	Evil	Spy	Spy	Lose	Executed
+21	Émilie	Good	Good	Empath	Empath	Win	By demon
+21	Viktorija	Evil	Evil	Scarlet Woman	Imp	Lose	Executed
+22	Tayyab	Good	Good	Ravenkeeper	Ravenkeeper	Win	Survived
+22	Gvidas	Good	Good	Investigator	Investigator	Win	By demon
+22	Viktorija	Evil	Evil	Pit-Hag	Pit-Hag	Lose	Survived
+22	Ryan	Evil	Evil	Al-Hadikhia	Al-Hadikhia	Lose	Executed
+22	John	Good	Good	Saint	Saint	Win	By demon
+22	Tobi	Good	Good	Goon	Goon	Win	Survived
+22	Ned	Good	Good	Steward	Steward	Win	Executed
+22	Alfie	Good	Good	Librarian	Poisoner	Win	By demon
+22	Boyana	Good	Good	Slayer	Slayer	Win	By demon
+23	Kyle	Good	Good	Village Idiot	Village Idiot	Lose	By demon
+23	Ned	Good	Good	Village Idiot	Village Idiot	Lose	By demon
+23	Alfie	Evil	Evil	Po	Po	Win	Survived
+23	Tobi	Evil	Evil	Poisoner	Poisoner	Win	Survived
+23	Gvidas	Good	Good	Fortune Teller	Fortune Teller	Lose	By demon
+23	Tom	Good	Good	Mayor	Mayor	Lose	Executed
+23	Boyana	Good	Good	Virgin	Virgin	Lose	Executed
+23	Tayyab	Good	Good	Gunslinger	Gunslinger	Lose	Exiled
