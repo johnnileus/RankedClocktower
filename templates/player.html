@@ -1,0 +1,94 @@
+﻿{% extends "base.html" %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block content %}
+  <p><a href="{{ url_for('stat_page') }}">&larr; Back to stats</a></p>
+  <h1>{{ name }}</h1>
+
+  <p>
+    <b>{{ summary['games'] }}</b> games |
+    <b>{{ summary['wins'] }}</b> wins |
+    Winrate: <b>{{ summary['winrate'] }}%</b> |
+    Survival rate: <b>{{ summary['survival'] }}%</b>
+  </p>
+  <p>
+    Good: <b>{{ summary['good_winrate'] ~ '%' if summary['good_winrate'] is not none else '-' }}</b>
+    ({{ summary['good_games'] }} games) |
+    Evil: <b>{{ summary['evil_winrate'] ~ '%' if summary['evil_winrate'] is not none else '-' }}</b>
+    ({{ summary['evil_games'] }} games)
+  </p>
+  <p>
+    Win streak: {{ streaks['cur_win'] }} (best {{ streaks['best_win'] }}) |
+    Lose streak: {{ streaks['cur_loss'] }} (best {{ streaks['best_loss'] }})
+  </p>
+
+  <h2>Characters played</h2>
+  <table border="1">
+    <thead><tr><th>Character</th><th>Played</th><th>Winrate</th></tr></thead>
+    <tbody>
+      {% for c in characters %}
+      <tr>
+        <th>{{ c['name'] }}</th>
+        <td>{{ c['plays'] }}</td>
+        <td>{{ c['winrate'] }}%</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>How they died</h2>
+  {% if deaths %}
+  <table border="1">
+    <thead><tr><th>Cause</th><th>Times</th></tr></thead>
+    <tbody>
+      {% for cause, count in deaths %}
+      <tr><th>{{ cause }}</th><td>{{ count }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>Has never died.</p>
+  {% endif %}
+
+  <h2>Teammates</h2>
+  {% if teammates %}
+  <table border="1">
+    <thead><tr><th>Player</th><th>Games together</th><th>Winrate together</th></tr></thead>
+    <tbody>
+      {% for t in teammates %}
+      <tr>
+        <th><a href="{{ url_for('player_page', player_id=t['id']) }}">{{ t['name'] }}</a></th>
+        <td>{{ t['games'] }}</td>
+        <td>{{ t['winrate'] }}%</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <p>Not enough shared games yet.</p>
+  {% endif %}
+
+  <h2>Game history</h2>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Game</th><th>Date</th><th>Script</th><th>Started as</th>
+        <th>Ended as</th><th>Result</th><th>Outcome</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for h in history %}
+      <tr>
+        <td><a href="{{ url_for('game_detail', game_id=h['game_id']) }}">#{{ h['game_id'] }}</a></td>
+        <td>{{ h['date'] }}</td>
+        <td>{{ h['script'] or '-' }}</td>
+        <td>{{ h['start_char'] }} ({{ h['start_alignment'] }})</td>
+        <td>{{ h['end_char'] }} ({{ h['end_alignment'] }})</td>
+        <td>{{ 'Win' if h['end_alignment'] == h['winning_team'] else 'Loss' }}</td>
+        <td>{{ h['death_cause'] or 'Survived' }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

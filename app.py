@@ -1,4 +1,5 @@
 ﻿import sqlite3
+from collections import Counter
 from datetime import date
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 
@@ -8,6 +9,8 @@ app.secret_key = "dev-only-change-later"   # needed for flash messages
 # Keep this in sync with the CHECK list in schema.sql
 DEATH_CAUSES = ["Executed", "By demon", "Own ability", "Other ability", "Survived", "Exiled"]
 
+MINIMUM_GAMES = 1
+MINIMUM_TOGETHER = 3
 
 def get_db():
     conn = sqlite3.connect("clocktower.db")
@@ -75,38 +78,110 @@ def win_streaks(conn):
                          "cur_win": cur_win, "cur_loss": cur_loss}
     return streaks
 
+def percent(part, whole):
+    """Return part/whole as a percentage rounded to 1 decimal place."""
+    if whole == 0:
+        return None
+    return round(100 * part / whole, 1)
 
 @app.route("/", methods=["GET", "POST"])
 def stat_page():
     conn = get_db()
     try:
-        headline = conn.execute(
-            "SELECT (SELECT COUNT(*) FROM games) AS games, "
-            "       (SELECT COUNT(*) FROM players) AS players, "
-            "       (SELECT COUNT(DISTINCT storyteller) FROM games) AS storytellers, "
-            "       (SELECT ROUND(100.0 * SUM(winning_team = 'Evil') / COUNT(*), 1) "
-            "        FROM games) AS evil_winrate"
-        ).fetchone()
-
-        player_stats = conn.execute(
-            "SELECT p.name, COUNT(*) AS games, "
-            "  SUM(gp.end_alignment = g.winning_team) AS wins, "
-            "  ROUND(100.0 * SUM(gp.end_alignment = g.winning_team) / COUNT(*), 1) AS winrate "
-            "FROM game_players gp "
-            "JOIN players p ON p.id = gp.player_id "
-            "JOIN games g   ON g.id = gp.game_id "
-            "GROUP BY p.id HAVING games >= 1 "
-            "ORDER BY games DESC, winrate DESC"
+        # ---- 1. Fetch the raw data (no calculations in SQL) ----
+        games = conn.execute(
+            "SELECT id, storyteller, winning_team FROM games"
         ).fetchall()
 
-        character_rows = conn.execute(
-            "SELECT c.type, c.name, COUNT(*) AS plays, "
-            "  ROUND(100.0 * SUM(gp.end_alignment = g.winning_team) / COUNT(*), 1) AS winrate "
+        entries = conn.execute(
+            "SELECT p.id AS player_id, p.name AS player, "
+            "       c.name AS character, c.type AS char_type, "
+            "       gp.end_alignment, g.winning_team "
             "FROM game_players gp "
+            "JOIN players p    ON p.id = gp.player_id "
             "JOIN characters c ON c.id = gp.start_character_id "
-            "JOIN games g      ON g.id = gp.game_id "
-            "GROUP BY c.id ORDER BY plays DESC, c.name"
+            "JOIN games g      ON g.id = gp.game_id"
         ).fetchall()
+
+        # ---- 2. Headline numbers ----
+        evil_wins = sum(1 for g in games if g["winning_team"] == "Evil")
+        storytellers = {g["storyteller"] for g in games if g["storyteller"]}
+        players_seen = {e["player"] for e in entries}
+
+        headline = {
+            "games": len(games),
+            "players": len(players_seen),
+            "storytellers": len(storytellers),
+            "evil_winrate": percent(evil_wins, len(games)),
+        }
+
+        # ---- 3. Player stats ----
+        # Build {"Tom K": {"games": 16, "wins": 11}, ...}
+        player_totals = {}
+        for e in entries:
+            totals = player_totals.setdefault(e["player"], {
+                "id": e["player_id"],
+                "games": 0, "wins": 0,
+                "good_games": 0, "good_wins": 0,
+                "evil_games": 0, "evil_wins": 0,
+            })
+            won = e["end_alignment"] == e["winning_team"]
+
+            totals["games"] += 1
+            if won:
+                totals["wins"] += 1
+
+            if e["end_alignment"] == "Good":
+                totals["good_games"] += 1
+                if won:
+                    totals["good_wins"] += 1
+            else:
+                totals["evil_games"] += 1
+                if won:
+                    totals["evil_wins"] += 1
+
+        player_stats = []
+        for name, totals in player_totals.items():
+            if totals["games"] >= MINIMUM_GAMES:
+                player_stats.append({
+                    "id": totals["id"],
+                    "name": name,
+                    "games": totals["games"],
+                    "wins": totals["wins"],
+                    "winrate": percent(totals["wins"], totals["games"]),
+                    "good_games": totals["good_games"],
+                    "good_wins": totals["good_wins"],
+                    "good_winrate": percent(totals["good_wins"], totals["good_games"]),
+                    "evil_games": totals["evil_games"],
+                    "evil_wins": totals["evil_wins"],
+                    "evil_winrate": percent(totals["evil_wins"], totals["evil_games"]),
+                })
+
+        # Most games first; ties broken by higher winrate
+        player_stats.sort(key=lambda p: (-p["games"], -p["winrate"]))
+
+        # ---- 4. Character stats ----
+        # Build {"Imp": {"type": "Demon", "plays": 11, "wins": 4}, ...}
+        character_totals = {}
+        for e in entries:
+            totals = character_totals.setdefault(
+                e["character"], {"type": e["char_type"], "plays": 0, "wins": 0}
+            )
+            totals["plays"] += 1
+            if e["end_alignment"] == e["winning_team"]:
+                totals["wins"] += 1
+
+        character_rows = []
+        for name, totals in character_totals.items():
+            character_rows.append({
+                "type": totals["type"],
+                "name": name,
+                "plays": totals["plays"],
+                "winrate": percent(totals["wins"], totals["plays"]),
+            })
+
+        # Most played first; ties alphabetical
+        character_rows.sort(key=lambda c: (-c["plays"], c["name"]))
 
         # Group into {"Townsfolk": [rows], "Demon": [rows], ...}
         characters_by_type = {}
@@ -306,5 +381,124 @@ def delete_game(game_id):
 
         flash(f"Deleted game #{game_id}.")
         return redirect(url_for("list_games"))
+    finally:
+        conn.close()
+
+
+@app.route("/player/<int:player_id>")
+def player_page(player_id):
+    conn = get_db()
+    try:
+        player = conn.execute(
+            "SELECT id, name FROM players WHERE id = ?", (player_id,)
+        ).fetchone()
+        if player is None:
+            abort(404)
+        name = player["name"]
+
+        # Every game this player was in, newest first
+        rows = conn.execute(
+            "SELECT g.id AS game_id, g.date, g.script, g.storyteller, g.winning_team, "
+            "       sc.name AS start_char, gp.start_alignment, "
+            "       ec.name AS end_char, gp.end_alignment, gp.death_cause "
+            "FROM game_players gp "
+            "JOIN games g       ON g.id  = gp.game_id "
+            "JOIN characters sc ON sc.id = gp.start_character_id "
+            "JOIN characters ec ON ec.id = gp.end_character_id "
+            "WHERE gp.player_id = ? "
+            "ORDER BY g.date DESC, g.id DESC",
+            (player_id,),
+        ).fetchall()
+
+        if not rows:
+            abort(404)
+
+        # ---- Totals ----
+        wins = good_games = good_wins = evil_games = evil_wins = survived = 0
+        char_totals = {}          # {"Imp": {"plays": 3, "wins": 1}}
+        death_counts = Counter()
+        my_alignment = {}         # game id -> my end alignment
+        i_won = {}                # game id -> True/False
+
+        for r in rows:
+            won = r["end_alignment"] == r["winning_team"]
+            my_alignment[r["game_id"]] = r["end_alignment"]
+            i_won[r["game_id"]] = won
+
+            if won:
+                wins += 1
+            if r["end_alignment"] == "Good":
+                good_games += 1
+                good_wins += won
+            else:
+                evil_games += 1
+                evil_wins += won
+
+            if r["death_cause"] is None:
+                survived += 1
+            else:
+                death_counts[r["death_cause"]] += 1
+
+            c = char_totals.setdefault(r["start_char"], {"plays": 0, "wins": 0})
+            c["plays"] += 1
+            c["wins"] += won
+
+        total = len(rows)
+        summary = {
+            "games": total,
+            "wins": wins,
+            "winrate": percent(wins, total),
+            "good_games": good_games,
+            "good_winrate": percent(good_wins, good_games),
+            "evil_games": evil_games,
+            "evil_winrate": percent(evil_wins, evil_games),
+            "survival": percent(survived, total),
+        }
+
+        characters = sorted(
+            [{"name": n, "plays": c["plays"], "winrate": percent(c["wins"], c["plays"])}
+             for n, c in char_totals.items()],
+            key=lambda c: (-c["plays"], c["name"]),
+        )
+
+        deaths = death_counts.most_common()   # [("By demon", 5), ...]
+
+        # ---- Teammates ----
+        others = conn.execute(
+            "SELECT gp.game_id, p.id AS player_id, p.name, gp.end_alignment "
+            "FROM game_players gp "
+            "JOIN players p ON p.id = gp.player_id "
+            "WHERE gp.player_id != ? AND gp.game_id IN ("
+            "  SELECT game_id FROM game_players WHERE player_id = ?)",
+            (player_id, player_id),
+        ).fetchall()
+
+        teammate_totals = {}      # keyed by id so the link can use it
+        for o in others:
+            # Only count people who ended on the same team as this player
+            if o["end_alignment"] == my_alignment[o["game_id"]]:
+                t = teammate_totals.setdefault(
+                    o["player_id"], {"name": o["name"], "games": 0, "wins": 0}
+                )
+                t["games"] += 1
+                t["wins"] += i_won[o["game_id"]]
+
+        teammates = sorted(
+            [{"id": pid, "name": t["name"], "games": t["games"],
+              "winrate": percent(t["wins"], t["games"])}
+             for pid, t in teammate_totals.items() if t["games"] >= 2],
+            key=lambda t: (-t["winrate"], -t["games"]),
+        )
+
+        return render_template(
+            "player.html",
+            name=name,
+            summary=summary,
+            streaks=win_streaks(conn)[name],
+            characters=characters,
+            deaths=deaths,
+            teammates=teammates,
+            history=rows,
+        )
     finally:
         conn.close()
